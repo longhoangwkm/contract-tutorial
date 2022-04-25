@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.9;
 
-contract Sample {
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract Sample is Ownable {
     mapping(address => uint256) public balances;
 
     uint256 public total;
-    address public owner;
 
     constructor() {
-        owner = msg.sender;
         _mint(100, msg.sender);
     }
 
@@ -20,9 +20,7 @@ contract Sample {
     );
     event Minted(uint256 amount, address to);
 
-    function mint(uint256 _amount, address _to) external {
-        require(owner == msg.sender, "invalid owner");
-
+    function mint(uint256 _amount, address _to) external onlyOwner {
         _mint(_amount, _to);
     }
 
